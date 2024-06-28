@@ -1,0 +1,27 @@
+.button {
+  display: inline-block;
+  font-weight: 400;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: #343a40;
+  border: 1px solid #343a40;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.button:active {
+  color: #fff;
+  background-color: #23272b;
+  border-color: #1d2124;
+}
+
+.button:hover {
+  color: #fff;
+  background-color: #23272b;
+  border-color: #1d2124;
+}

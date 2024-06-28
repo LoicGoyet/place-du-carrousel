@@ -4,11 +4,12 @@ import { useImageGeneration } from '@/hooks/useGenerateImg';
 import * as React from 'react';
 import styles from './index.module.css';
 import Cover from '../Cover';
-import ImgInput from '../ImgInput';
-import TextInput from '../TextInput';
+import FileInput from '../FileInput';
+import Input from '../Input';
 import { useForm } from './useForm';
 import Select from '../Select';
 import { coverShapes } from '@/data/cover';
+import Button from '../Button';
 
 export default function CoverGenerator() {
   const coverRef = React.useRef<HTMLDivElement | null>(null);
@@ -30,9 +31,15 @@ export default function CoverGenerator() {
             </option>
           ))}
         </Select>
-        <ImgInput value={values.img} onChange={actions.updateImg} />
-        <TextInput value={values.title} onChange={actions.updateTitle} />
-        <button onClick={generateImage}>generate</button>
+        <FileInput value={values.img} onChange={actions.updateImg} />
+        <Input
+          value={values.title}
+          onChange={actions.updateTitle}
+          placeholder="Titre"
+        />
+        <Button className={styles['form__submit']} onClick={generateImage}>
+          Generate
+        </Button>
       </div>
 
       <Cover

@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import styles from './index.module.css';
 
 interface SelectProps {
   children: ReactElement[] | ReactElement;
@@ -16,7 +17,11 @@ const Select: React.FC<SelectProps> = (props) => {
   });
 
   return (
-    <select onChange={props.onChange} value={props.value}>
+    <select
+      className={styles['select']}
+      onChange={props.onChange}
+      value={props.value}
+    >
       {props.children}
     </select>
   );
