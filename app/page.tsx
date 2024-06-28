@@ -87,8 +87,8 @@ export default function Home() {
   const img = useImg(src);
 
   const [generateImage] = useImageGeneration(imgWrapperRef, 'test', {
-    width: 2000,
-    height: 2000,
+    width: 1000,
+    height: 1000,
   });
 
   return (
