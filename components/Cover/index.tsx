@@ -18,12 +18,7 @@ export default React.forwardRef<HTMLDivElement, Props>(function Cover(
   return (
     <div className={styles['cover']} style={{ width, height }} ref={ref}>
       <h1 className={styles['cover__heading']}>{title}</h1>
-      <DraggableImg
-        src={img}
-        wrapperSize={1000}
-        wrapperWidth={width}
-        wrapperHeight={height}
-      />
+      <DraggableImg src={img} wrapperWidth={width} wrapperHeight={height} />
     </div>
   );
 });

@@ -6,7 +6,6 @@ import { getComputedSize } from './utils';
 
 type Props = {
   src: string;
-  wrapperSize: number;
   wrapperWidth: number;
   wrapperHeight: number;
 };
