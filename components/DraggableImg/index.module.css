@@ -1,0 +1,29 @@
+.draggable-img {
+  display: block;
+  pointer-events: all;
+  cursor: move;
+}
+
+.draggable-img--landscape {
+  height: 100%;
+  cursor: ew-resize;
+}
+
+.draggable-img--portrait {
+  width: 100%;
+  cursor: ns-resize;
+}
+
+.draggable-img__source {
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+.draggable-img--landscape .draggable-img__source {
+  height: 100%;
+}
+
+.draggable-img--portrait .image__source {
+  width: 100%;
+}
