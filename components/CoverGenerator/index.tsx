@@ -23,7 +23,7 @@ export default function CoverGenerator() {
 
   return (
     <React.Fragment>
-      <div className={styles.form}>
+      <form className={styles.form} onSubmit={generateImage}>
         <Select value={values.shape} onChange={actions.updateShape}>
           {Object.keys(coverShapes).map((shape) => (
             <option key={shape} value={shape}>
@@ -37,10 +37,10 @@ export default function CoverGenerator() {
           onChange={actions.updateTitle}
           placeholder="Titre"
         />
-        <Button className={styles['form__submit']} onClick={generateImage}>
+        <Button type="submit" className={styles['form__submit']}>
           Generate
         </Button>
-      </div>
+      </form>
 
       <Cover
         title={values.title}

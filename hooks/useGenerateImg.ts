@@ -8,7 +8,7 @@ export const useImageGeneration = (
   options = {}
 ) => {
   const generateImage = React.useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       domtoimage.toJpeg(ref.current, options).then((dataUrl: string) => {
