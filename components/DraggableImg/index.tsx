@@ -2,16 +2,19 @@ import cc from 'classcat';
 import Draggable from 'react-draggable';
 import * as React from 'react';
 import styles from './index.module.css';
+import { getComputedSize } from './utils';
 
 type Props = {
   src: string;
   wrapperSize: number;
+  wrapperWidth: number;
+  wrapperHeight: number;
 };
 
 const DraggableImg = (props: Props) => {
-  const [{ originWidth, originHeight }, setSrcSize] = React.useState({
-    originWidth: 0,
-    originHeight: 0,
+  const [{ naturalWidth, naturalHeight }, setSrcSize] = React.useState({
+    naturalWidth: 0,
+    naturalHeight: 0,
   });
 
   React.useEffect(() => {
@@ -23,31 +26,28 @@ const DraggableImg = (props: Props) => {
         const { naturalWidth, naturalHeight } = imageDom;
 
         setSrcSize({
-          originWidth: naturalWidth,
-          originHeight: naturalHeight,
+          naturalWidth,
+          naturalHeight,
         });
       };
     }
   }, [props.src]);
 
-  if (!props.src || originWidth === 0 || originHeight === 0) return null;
+  if (!props.src || naturalWidth === 0 || naturalHeight === 0) return null;
 
-  const orientation = originHeight / originWidth > 1 ? 'portrait' : 'landscape';
-  const computedWidth =
-    orientation === 'landscape'
-      ? (originWidth * props.wrapperSize) / originHeight
-      : props.wrapperSize;
-  const computedHeight =
-    orientation === 'portrait'
-      ? (originHeight * props.wrapperSize) / originWidth
-      : props.wrapperSize;
+  const { axis, width, height } = getComputedSize(
+    props.wrapperWidth,
+    props.wrapperHeight,
+    naturalWidth,
+    naturalHeight
+  );
 
   return (
     <Draggable
-      axis={orientation === 'landscape' ? 'x' : 'y'}
+      axis={axis}
       bounds={{
-        left: props.wrapperSize - computedWidth,
-        top: props.wrapperSize - computedHeight,
+        left: props.wrapperWidth - width,
+        top: props.wrapperHeight - height,
         right: 0,
         bottom: 0,
       }}
@@ -55,16 +55,20 @@ const DraggableImg = (props: Props) => {
       <span
         className={cc([
           styles['draggable-img'],
-          styles[`draggable-img--${orientation}`],
+          styles[`draggable-img--${axis}`],
         ])}
+        style={{
+          width,
+          height,
+        }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className={styles['draggable-img__source']}
           src={props.src}
           alt="cover"
-          width={computedWidth}
-          height={computedHeight}
+          width={width}
+          height={height}
         />
       </span>
     </Draggable>

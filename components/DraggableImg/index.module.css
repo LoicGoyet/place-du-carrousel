@@ -4,12 +4,12 @@
   cursor: move;
 }
 
-.draggable-img--landscape {
+.draggable-img--x {
   height: 100%;
   cursor: ew-resize;
 }
 
-.draggable-img--portrait {
+.draggable-img--y {
   width: 100%;
   cursor: ns-resize;
 }
@@ -20,10 +20,10 @@
   user-select: none;
 }
 
-.draggable-img--landscape .draggable-img__source {
+.draggable-img--x .draggable-img__source {
   height: 100%;
 }
 
-.draggable-img--portrait .image__source {
+.draggable-img--y .image__source {
   width: 100%;
 }

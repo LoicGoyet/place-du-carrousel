@@ -13,10 +13,11 @@ import { coverShapes } from '@/data/cover';
 export default function CoverGenerator() {
   const coverRef = React.useRef<HTMLDivElement | null>(null);
   const { values, actions } = useForm();
+  const { width, height } = coverShapes[values.shape];
 
   const generateImage = useImageGeneration(coverRef, 'test', {
-    width: 1000,
-    height: 1000,
+    width,
+    height,
   });
 
   return (
