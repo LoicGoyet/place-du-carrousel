@@ -1,94 +1,112 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import styles from './page.module.css';
+import Draggable from 'react-draggable';
+import cc from 'classcat';
+import { useImageGeneration } from '@/hooks/useGenerateImg';
+
+const useImg = (src: string, wrapperSize = 1000) => {
+  const [{ originWidth, originHeight }, setSrcSize] = useState({
+    originWidth: 0,
+    originHeight: 0,
+  });
+
+  useEffect(() => {
+    if (!!src) {
+      const imageDom = document.createElement('img');
+      imageDom.setAttribute('src', src);
+
+      imageDom.onload = () => {
+        const { naturalWidth, naturalHeight } = imageDom;
+
+        setSrcSize({
+          originWidth: naturalWidth,
+          originHeight: naturalHeight,
+        });
+      };
+    }
+  }, [src]);
+
+  if (!src || originWidth === 0 || originHeight === 0) return null;
+
+  const orientation = originHeight / originWidth > 1 ? 'portrait' : 'landscape';
+  const computedWidth =
+    orientation === 'landscape'
+      ? (originWidth * wrapperSize) / originHeight
+      : wrapperSize;
+  const computedHeight =
+    orientation === 'portrait'
+      ? (originHeight * wrapperSize) / originWidth
+      : wrapperSize;
+
+  return (
+    <Draggable
+      axis={orientation === 'landscape' ? 'x' : 'y'}
+      bounds={{
+        left: wrapperSize - computedWidth,
+        top: wrapperSize - computedHeight,
+        right: 0,
+        bottom: 0,
+      }}
+    >
+      <span className={cc([styles['image'], styles[`image--${orientation}`]])}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className={styles['image__source']}
+          src={src}
+          alt="cover"
+          width={computedWidth}
+          height={computedHeight}
+        />
+      </span>
+    </Draggable>
+  );
+};
+
+const TextInput = ({
+  onChange,
+}: {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  return <input onChange={onChange} />;
+};
+const ImgInput = ({
+  onChange,
+}: {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  return <input type="file" onChange={onChange} />;
+};
 
 export default function Home() {
+  const imgWrapperRef = useRef<HTMLDivElement | null>(null);
+  const [src, setSrc] = useState('');
+  const [title, setTitle] = useState('');
+
+  const img = useImg(src);
+
+  const [generateImage] = useImageGeneration(imgWrapperRef, 'test', {
+    width: 2000,
+    height: 2000,
+  });
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+      <div className={styles.form}>
+        <ImgInput
+          onChange={(e) => {
+            if (!e.target.files) return;
+            const url = URL.createObjectURL(e.target.files[0]);
+            setSrc(url);
+          }}
         />
+        <TextInput onChange={(e) => setTitle(e.target.value)} />
+        <button onClick={generateImage}>generate</button>
       </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className={styles['img-wrapper']} ref={imgWrapperRef}>
+        <h1 className={styles['img-heading']}>{title}</h1>
+        {img}
       </div>
     </main>
   );
