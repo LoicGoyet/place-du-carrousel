@@ -4,8 +4,8 @@ export const coverShapes = {
     height: 1080,
   },
   twitter: {
-    width: 1600,
-    height: 900,
+    width: 1408,
+    height: 792,
   },
   'story-instagram': {
     width: 1080,
