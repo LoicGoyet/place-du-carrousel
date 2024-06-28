@@ -4,18 +4,21 @@ import * as React from 'react';
 type FormState = {
   img: string;
   title: string;
+  subtitle: string;
   shape: keyof typeof coverShapes;
 };
 
 const initialState: FormState = {
   img: '',
   title: '',
+  subtitle: '',
   shape: 'square',
 };
 
 type Action =
   | { type: 'SET_IMG'; payload: string }
   | { type: 'SET_TITLE'; payload: string }
+  | { type: 'SET_SUBTITLE'; payload: string }
   | { type: 'SET_SHAPE'; payload: FormState['shape'] };
 
 const reducer = (state: FormState, action: Action): FormState => {
@@ -24,6 +27,8 @@ const reducer = (state: FormState, action: Action): FormState => {
       return { ...state, img: action.payload };
     case 'SET_TITLE':
       return { ...state, title: action.payload };
+    case 'SET_SUBTITLE':
+      return { ...state, subtitle: action.payload };
     case 'SET_SHAPE':
       return { ...state, shape: action.payload };
     default:
@@ -50,6 +55,13 @@ export const useForm = () => {
     [dispatch]
   );
 
+  const updateSubtitle = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch({ type: 'SET_SUBTITLE', payload: e.target.value });
+    },
+    [dispatch]
+  );
+
   const updateShape = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const { value } = e.target;
@@ -67,8 +79,9 @@ export const useForm = () => {
     values: {
       img: state.img,
       title: state.title,
+      subtitle: state.subtitle,
       shape: state.shape,
     },
-    actions: { updateImg, updateTitle, updateShape },
+    actions: { updateImg, updateTitle, updateSubtitle, updateShape },
   };
 };

@@ -37,6 +37,11 @@ export default function CoverGenerator() {
           onChange={actions.updateTitle}
           placeholder="Titre"
         />
+        <Input
+          value={values.subtitle}
+          onChange={actions.updateSubtitle}
+          placeholder="Sous titre"
+        />
         <Button type="submit" className={styles['form__submit']}>
           Generate
         </Button>
