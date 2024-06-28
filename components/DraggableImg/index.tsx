@@ -18,6 +18,7 @@ const DraggableImg = (props: Props) => {
   const [cursor, setCursor] = React.useState<
     's' | 'n' | 'ns' | 'e' | 'w' | 'ew' | 'null'
   >('null');
+  const [position, setPosition] = React.useState({ x: 0, y: 0 });
 
   React.useEffect(() => {
     if (!!props.src) {
@@ -31,6 +32,11 @@ const DraggableImg = (props: Props) => {
           naturalWidth,
           naturalHeight,
         });
+
+        setPosition({
+          x: 0,
+          y: 0,
+        });
       };
     }
   }, [props.src]);
@@ -42,24 +48,36 @@ const DraggableImg = (props: Props) => {
       naturalWidth,
       naturalHeight
     );
-    if (axis === 'x') setCursor('e');
-    if (axis === 'y') setCursor('s');
+
+    setPosition({
+      x: 0,
+      y: 0,
+    });
+
+    setCursor(() => {
+      return axis === 'x' ? 'e' : 's';
+    });
   }, [props.wrapperWidth, props.wrapperHeight, naturalWidth, naturalHeight]);
 
   const handleDrag = React.useCallback(
     (axis: 'x' | 'y', width: number, height: number) =>
       (e: DraggableEvent, data: DraggableData) => {
-        if (axis === 'y') {
-          if (data.y === 0) return setCursor('s');
-          if (data.y === props.wrapperHeight - height) return setCursor('n');
-          return setCursor('ns');
-        }
+        setPosition({
+          x: data.x,
+          y: data.y,
+        });
 
-        if (axis === 'x') {
-          if (data.x === 0) return setCursor('e');
-          if (data.x === props.wrapperWidth - width) return setCursor('w');
-          return setCursor('ew');
-        }
+        setCursor(() => {
+          if (axis === 'y') {
+            if (data.y === 0) return 's';
+            if (data.y === props.wrapperHeight - height) return 'n';
+            return 'ns';
+          } else {
+            if (data.x === 0) return 'e';
+            if (data.x === props.wrapperWidth - width) return 'w';
+            return 'ew';
+          }
+        });
       },
     [props.wrapperHeight, props.wrapperWidth]
   );
@@ -82,7 +100,7 @@ const DraggableImg = (props: Props) => {
         right: 0,
         bottom: 0,
       }}
-      defaultPosition={{ x: 0, y: 0 }}
+      position={position}
       onDrag={handleDrag(axis, width, height)}
     >
       <span
