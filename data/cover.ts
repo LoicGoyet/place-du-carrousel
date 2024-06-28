@@ -1,15 +1,17 @@
+// value divided by 2
+// but on generation they will have the good size
 export const coverShapes = {
   square: {
-    width: 1080,
-    height: 1080,
+    width: 540,
+    height: 540,
   },
   twitter: {
-    width: 1408,
-    height: 792,
+    width: 600,
+    height: 337.5,
   },
   'story-instagram': {
-    width: 1080,
-    height: 1920,
+    width: 540,
+    height: 960,
   },
 };
 
