@@ -1,9 +1,10 @@
-const TextInput = ({
-  onChange,
-}: {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
-  return <input onChange={onChange} />;
+type Props = {
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  value: string;
+};
+
+const TextInput = ({ onChange, value }: Props) => {
+  return <input onChange={onChange} value={value} />;
 };
 
 export default TextInput;

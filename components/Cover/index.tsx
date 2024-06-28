@@ -4,17 +4,17 @@ import styles from './index.module.css';
 
 type Props = {
   title: string;
-  src: string;
+  img: string;
 };
 
 export default React.forwardRef<HTMLDivElement, Props>(function Cover(
-  { title, src },
+  { title, img },
   ref
 ) {
   return (
     <div className={styles['cover']} ref={ref}>
       <h1 className={styles['cover__heading']}>{title}</h1>
-      <DraggableImg src={src} wrapperSize={1000} />
+      <DraggableImg src={img} wrapperSize={1000} />
     </div>
   );
 });

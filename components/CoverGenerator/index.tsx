@@ -6,11 +6,11 @@ import styles from './index.module.css';
 import Cover from '../Cover';
 import ImgInput from '../ImgInput';
 import TextInput from '../TextInput';
+import { useForm } from './useForm';
 
 export default function CoverGenerator() {
   const coverRef = React.useRef<HTMLDivElement | null>(null);
-  const [src, setSrc] = React.useState('');
-  const [title, setTitle] = React.useState('');
+  const { values, actions } = useForm();
 
   const generateImage = useImageGeneration(coverRef, 'test', {
     width: 1000,
@@ -20,18 +20,12 @@ export default function CoverGenerator() {
   return (
     <React.Fragment>
       <div className={styles.form}>
-        <ImgInput
-          onChange={(e) => {
-            if (!e.target.files) return;
-            const url = URL.createObjectURL(e.target.files[0]);
-            setSrc(url);
-          }}
-        />
-        <TextInput onChange={(e) => setTitle(e.target.value)} />
+        <ImgInput value={values.img} onChange={actions.updateImg} />
+        <TextInput value={values.title} onChange={actions.updateTitle} />
         <button onClick={generateImage}>generate</button>
       </div>
 
-      <Cover title={title} src={src} ref={coverRef} />
+      <Cover title={values.title} img={values.img} ref={coverRef} />
     </React.Fragment>
   );
 }
