@@ -1,21 +1,25 @@
 // @ts-ignore
 import domtoimage from 'dom-to-image-more';
+import * as React from 'react';
 
 export const useImageGeneration = (
   ref: React.RefObject<HTMLDivElement>,
   title: string,
   options = {}
 ) => {
-  const generateImage = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const generateImage = React.useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
 
-    domtoimage.toJpeg(ref.current, options).then((dataUrl: string) => {
-      const link = document.createElement('a');
-      link.download = `${title}.jpeg`;
-      link.href = dataUrl;
-      link.click();
-    });
-  };
+      domtoimage.toJpeg(ref.current, options).then((dataUrl: string) => {
+        const link = document.createElement('a');
+        link.download = `${title}.jpeg`;
+        link.href = dataUrl;
+        link.click();
+      });
+    },
+    [ref, title, options]
+  );
 
-  return [generateImage];
+  return generateImage;
 };

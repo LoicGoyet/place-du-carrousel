@@ -12,7 +12,7 @@ export default function CoverGenerator() {
   const [src, setSrc] = React.useState('');
   const [title, setTitle] = React.useState('');
 
-  const [generateImage] = useImageGeneration(coverRef, 'test', {
+  const generateImage = useImageGeneration(coverRef, 'test', {
     width: 1000,
     height: 1000,
   });
