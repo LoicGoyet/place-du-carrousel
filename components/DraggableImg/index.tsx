@@ -1,5 +1,5 @@
 import cc from 'classcat';
-import Draggable from 'react-draggable';
+import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import * as React from 'react';
 import styles from './index.module.css';
 import { getComputedSize } from './utils';
@@ -15,6 +15,9 @@ const DraggableImg = (props: Props) => {
     naturalWidth: 0,
     naturalHeight: 0,
   });
+  const [cursor, setCursor] = React.useState<
+    's' | 'n' | 'ns' | 'e' | 'w' | 'ew' | 'null'
+  >('null');
 
   React.useEffect(() => {
     if (!!props.src) {
@@ -31,6 +34,35 @@ const DraggableImg = (props: Props) => {
       };
     }
   }, [props.src]);
+
+  React.useEffect(() => {
+    const { axis } = getComputedSize(
+      props.wrapperWidth,
+      props.wrapperHeight,
+      naturalWidth,
+      naturalHeight
+    );
+    if (axis === 'x') setCursor('e');
+    if (axis === 'y') setCursor('s');
+  }, [props.wrapperWidth, props.wrapperHeight, naturalWidth, naturalHeight]);
+
+  const handleDrag = React.useCallback(
+    (axis: 'x' | 'y', width: number, height: number) =>
+      (e: DraggableEvent, data: DraggableData) => {
+        if (axis === 'y') {
+          if (data.y === 0) return setCursor('s');
+          if (data.y === props.wrapperHeight - height) return setCursor('n');
+          return setCursor('ns');
+        }
+
+        if (axis === 'x') {
+          if (data.x === 0) return setCursor('e');
+          if (data.x === props.wrapperWidth - width) return setCursor('w');
+          return setCursor('ew');
+        }
+      },
+    [props.wrapperHeight, props.wrapperWidth]
+  );
 
   if (!props.src || naturalWidth === 0 || naturalHeight === 0) return null;
 
@@ -50,11 +82,14 @@ const DraggableImg = (props: Props) => {
         right: 0,
         bottom: 0,
       }}
+      defaultPosition={{ x: 0, y: 0 }}
+      onDrag={handleDrag(axis, width, height)}
     >
       <span
         className={cc([
           styles['draggable-img'],
           styles[`draggable-img--${axis}`],
+          styles[`draggable-img--cursor-${cursor}`],
         ])}
         style={{
           width,

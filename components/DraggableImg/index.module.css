@@ -6,12 +6,10 @@
 
 .draggable-img--x {
   height: 100%;
-  cursor: ew-resize;
 }
 
 .draggable-img--y {
   width: 100%;
-  cursor: ns-resize;
 }
 
 .draggable-img__source {
@@ -26,4 +24,28 @@
 
 .draggable-img--y .image__source {
   width: 100%;
+}
+
+.draggable-img--cursor-e {
+  cursor: e-resize;
+}
+
+.draggable-img--cursor-w {
+  cursor: w-resize;
+}
+
+.draggable-img--cursor-ew {
+  cursor: ew-resize;
+}
+
+.draggable-img--cursor-n {
+  cursor: n-resize;
+}
+
+.draggable-img--cursor-s {
+  cursor: s-resize;
+}
+
+.draggable-img--cursor-ns {
+  cursor: ns-resize;
 }
