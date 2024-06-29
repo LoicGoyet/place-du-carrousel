@@ -1,33 +1,26 @@
 .cover {
-  background-color: red;
   position: relative;
   overflow: hidden;
 }
 
-.cover::before {
+.cover__gradient {
   content: "";
-  background: linear-gradient(145deg, rgba(255, 58, 81, 0.5), #ed060600 50%);
+  background-size: cover;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-repeat: no-repeat;
   z-index: 1;
   pointer-events: none;
 }
 
-.cover::after {
-  content: "";
-  background: linear-gradient(45deg, rgb(80 132 147), #ed060600 50%);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: 1;
-  pointer-events: none;
+.cover--square .cover__gradient {
+  background-image: url("/cover/overlay-square.png");
+}
+
+.cover--twitter .cover__gradient {
+  background-image: url("/cover/overlay-twitter.png");
 }
 
 .cover__heading {
@@ -37,7 +30,33 @@
   z-index: 2;
   padding: 4rem;
   color: white;
-  font-size: 4rem;
+  font-size: 30px;
   pointer-events: none;
   font-family: 'Georgia', sans-serif;
+  font-weight: 400;
+}
+
+.cover__logo {
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: white;
+}
+
+.cover--square .cover__logo {
+  width: 383px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 69px;
+}
+
+.cover--twitter .cover__logo {
+  width: 280px;
+  left: 50px;
+  bottom: 39px;
+}
+
+.cover--square .cover__heading {
+  display: none;
 }
