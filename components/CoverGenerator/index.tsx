@@ -11,6 +11,7 @@ import Select from '../Select';
 import { coverShapes, isInShapeComposition } from '@/data/cover';
 import Button from '../Button';
 import cc from 'classcat';
+import { BarLoader } from 'react-spinners';
 
 export default function CoverGenerator() {
   const coverRef = React.useRef<HTMLDivElement | null>(null);
@@ -97,8 +98,16 @@ export default function CoverGenerator() {
             </p>
           ) : null}
 
-          <Button type="submit" className={styles['form__submit']}>
-            Générer
+          <Button
+            type="submit"
+            className={styles['form__submit']}
+            disabled={selectors.isSubmitting}
+          >
+            {selectors.isSubmitting ? (
+              <BarLoader color="#ffffff" width={58.695} />
+            ) : (
+              'Générer'
+            )}
           </Button>
         </div>
       </form>
