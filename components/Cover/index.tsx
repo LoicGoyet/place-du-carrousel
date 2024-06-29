@@ -7,17 +7,16 @@ import cc from 'classcat';
 
 type Props = {
   title: string;
-  subtitle: string;
   img: string;
   shape: keyof typeof coverShapes;
   className?: string;
 };
 
 export default React.forwardRef<HTMLDivElement, Props>(function Cover(
-  { title, subtitle, img, shape, className },
+  { title, img, shape, className },
   ref
 ) {
-  const { width, height } = coverShapes[shape];
+  const { width, height, imgWidth, imgHeight } = coverShapes[shape];
 
   return (
     <div
@@ -40,28 +39,14 @@ export default React.forwardRef<HTMLDivElement, Props>(function Cover(
         >
           {title}
         </h1>
-        <h1
-          className={cc({
-            [styles['cover__subtitle']]: true,
-            [styles['cover__subtitle--hidden']]: !isInShapeComposition(
-              shape,
-              'subtitle'
-            ),
-          })}
-        >
-          {subtitle}
-        </h1>
         {!!title ? <span className={styles['cover__separator']} /> : null}
       </div>
 
-      {shape === 'story-instagram' ? (
-        <p className={styles['cover__callout']}>
-          Disponible sur :<br />
-          Spotify, Apple et votre appli de podcast favorite
-        </p>
-      ) : null}
-
-      <DraggableImg src={img} wrapperWidth={width} wrapperHeight={height} />
+      <DraggableImg
+        src={img}
+        wrapperWidth={imgWidth}
+        wrapperHeight={imgHeight}
+      />
     </div>
   );
 });

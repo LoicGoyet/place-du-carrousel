@@ -6,7 +6,6 @@ type FormState = {
   values: {
     img: string;
     title: string;
-    subtitle: string;
     shape: keyof typeof coverShapes;
   };
 };
@@ -16,7 +15,6 @@ const initialState: FormState = {
   values: {
     img: '',
     title: '',
-    subtitle: '',
     shape: 'square',
   },
 };
@@ -24,7 +22,6 @@ const initialState: FormState = {
 type Action =
   | { type: 'SET_IMG'; payload: string }
   | { type: 'SET_TITLE'; payload: string }
-  | { type: 'SET_SUBTITLE'; payload: string }
   | { type: 'SET_SHAPE'; payload: FormState['values']['shape'] }
   | { type: 'SUBMIT' }
   | { type: 'SUBMIT_SUCCESS' }
@@ -48,14 +45,6 @@ const reducer = (state: FormState, action: Action): FormState => {
         ...state,
         status: 'idle',
         values: { ...state.values, title: action.payload },
-      };
-    }
-
-    case 'SET_SUBTITLE': {
-      return {
-        ...state,
-        status: 'idle',
-        values: { ...state.values, subtitle: action.payload },
       };
     }
 
@@ -112,13 +101,6 @@ export const useForm = () => {
     [dispatch]
   );
 
-  const updateSubtitle = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch({ type: 'SET_SUBTITLE', payload: e.target.value });
-    },
-    [dispatch]
-  );
-
   const updateShape = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const { value } = e.target;
@@ -149,7 +131,6 @@ export const useForm = () => {
     actions: {
       updateImg,
       updateTitle,
-      updateSubtitle,
       updateShape,
       submit,
       submitSuccess,

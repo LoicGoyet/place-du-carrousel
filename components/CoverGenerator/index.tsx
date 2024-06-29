@@ -44,7 +44,6 @@ export default function CoverGenerator() {
       <Cover
         className={styles['cover-generator__cover']}
         title={values.title}
-        subtitle={values.subtitle}
         img={values.img}
         shape={values.shape}
         ref={coverRef}
@@ -70,14 +69,6 @@ export default function CoverGenerator() {
             value={values.title}
             onChange={actions.updateTitle}
             placeholder="Titre"
-          />
-        ) : null}
-
-        {isInShapeComposition(values.shape, 'subtitle') ? (
-          <Input
-            value={values.subtitle}
-            onChange={actions.updateSubtitle}
-            placeholder="Sous titre"
           />
         ) : null}
 
