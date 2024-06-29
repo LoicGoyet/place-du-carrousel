@@ -15,12 +15,17 @@ import { BarLoader } from 'react-spinners';
 
 export default function CoverGenerator() {
   const coverRef = React.useRef<HTMLDivElement | null>(null);
-  const { values, actions, selectors } = useForm();
+  const {
+    values,
+    actions,
+    selectors: { isSubmitting, isError, isSuccess },
+  } = useForm();
 
   const generateImage = useImageGeneration(coverRef, 'test');
 
   const handleSubmit = React.useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
+      if (isSubmitting) return null;
       e.preventDefault();
 
       try {
@@ -31,7 +36,7 @@ export default function CoverGenerator() {
         actions.submitFailure();
       }
     },
-    [generateImage, actions]
+    [isSubmitting, actions, generateImage]
   );
 
   return (
@@ -76,7 +81,7 @@ export default function CoverGenerator() {
         ) : null}
 
         <div className={styles['form__action-bar']}>
-          {selectors.isError ? (
+          {isError ? (
             <p
               className={cc([
                 styles['form__status'],
@@ -87,23 +92,23 @@ export default function CoverGenerator() {
             </p>
           ) : null}
 
-          {selectors.isSuccess ? (
+          {isSuccess ? (
             <p
               className={cc([
                 styles['form__status'],
                 styles['form__status--success'],
               ])}
             >
-              Image générée !
+              Image téléchargée !
             </p>
           ) : null}
 
           <Button
             type="submit"
             className={styles['form__submit']}
-            disabled={selectors.isSubmitting}
+            disabled={isSubmitting}
           >
-            {selectors.isSubmitting ? (
+            {isSubmitting ? (
               <BarLoader color="#ffffff" width={58.695} />
             ) : (
               'Générer'
