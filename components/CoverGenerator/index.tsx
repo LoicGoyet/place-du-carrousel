@@ -22,8 +22,19 @@ export default function CoverGenerator() {
   });
 
   return (
-    <React.Fragment>
-      <form className={styles.form} onSubmit={generateImage}>
+    <div className={styles['cover-generator']}>
+      <Cover
+        className={styles['cover-generator__cover']}
+        title={values.title}
+        img={values.img}
+        shape={values.shape}
+        ref={coverRef}
+      />
+
+      <form
+        className={styles['cover-generator__form']}
+        onSubmit={generateImage}
+      >
         <Select value={values.shape} onChange={actions.updateShape}>
           {(Object.keys(coverShapes) as Array<keyof typeof coverShapes>).map(
             (shape) => {
@@ -51,13 +62,6 @@ export default function CoverGenerator() {
           Générer
         </Button>
       </form>
-
-      <Cover
-        title={values.title}
-        img={values.img}
-        shape={values.shape}
-        ref={coverRef}
-      />
-    </React.Fragment>
+    </div>
   );
 }

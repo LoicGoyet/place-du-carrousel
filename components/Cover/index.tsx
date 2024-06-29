@@ -9,17 +9,18 @@ type Props = {
   title: string;
   img: string;
   shape: keyof typeof coverShapes;
+  className?: string;
 };
 
 export default React.forwardRef<HTMLDivElement, Props>(function Cover(
-  { title, img, shape },
+  { title, img, shape, className },
   ref
 ) {
   const { width, height } = coverShapes[shape];
 
   return (
     <div
-      className={cc([styles['cover'], styles[`cover--${shape}`]])}
+      className={cc([styles['cover'], styles[`cover--${shape}`], className])}
       style={{ width, height }}
       ref={ref}
     >
