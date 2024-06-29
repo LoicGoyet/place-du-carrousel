@@ -21,7 +21,7 @@ export default function CoverGenerator() {
     selectors: { isSubmitting, isError, isSuccess },
   } = useForm();
 
-  const generateImage = useImageGeneration(coverRef, 'test');
+  const generateImage = useImageGeneration(coverRef, values.shape);
 
   const handleSubmit = React.useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {

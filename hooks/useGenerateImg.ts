@@ -28,7 +28,8 @@ export const useImageGeneration = (
       })
       .then((dataUrl: string) => {
         const link = document.createElement('a');
-        link.download = `${title}.png`;
+        const imgName = `pdc-${title}-${new Date().toISOString()}.png`;
+        link.download = imgName;
         link.href = changeDpiDataUrl(dataUrl, BASE_DPI * scale);
         link.click();
       })
