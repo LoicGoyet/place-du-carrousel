@@ -44,6 +44,7 @@ export default function CoverGenerator() {
       <Cover
         className={styles['cover-generator__cover']}
         title={values.title}
+        subtitle={values.subtitle}
         img={values.img}
         shape={values.shape}
         ref={coverRef}
