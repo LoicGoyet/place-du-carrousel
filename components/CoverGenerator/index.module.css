@@ -21,6 +21,24 @@
   gap: 1rem;
 }
 
-.form__submit {
-  align-self: flex-end;
+
+
+.form__action-bar {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.form__status {
+  flex-grow: 1;
+  text-align: right;
+}
+
+.form__status--error {
+  color: rgb(220, 53, 69);
+}
+
+.form__status--success {
+  color: rgb(25, 135, 84);
 }

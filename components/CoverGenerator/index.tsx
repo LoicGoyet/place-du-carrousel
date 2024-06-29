@@ -10,16 +10,28 @@ import { useForm } from './useForm';
 import Select from '../Select';
 import { coverShapes, isInShapeComposition } from '@/data/cover';
 import Button from '../Button';
+import cc from 'classcat';
 
 export default function CoverGenerator() {
   const coverRef = React.useRef<HTMLDivElement | null>(null);
-  const { values, actions } = useForm();
-  const { width, height } = coverShapes[values.shape];
+  const { values, actions, selectors } = useForm();
 
-  const generateImage = useImageGeneration(coverRef, 'test', {
-    width,
-    height,
-  });
+  const generateImage = useImageGeneration(coverRef, 'test');
+
+  const handleSubmit = React.useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      try {
+        actions.submit();
+        await generateImage();
+        actions.submitSuccess();
+      } catch {
+        actions.submitFailure();
+      }
+    },
+    [generateImage, actions]
+  );
 
   return (
     <div className={styles['cover-generator']}>
@@ -31,10 +43,7 @@ export default function CoverGenerator() {
         ref={coverRef}
       />
 
-      <form
-        className={styles['cover-generator__form']}
-        onSubmit={generateImage}
-      >
+      <form className={styles['cover-generator__form']} onSubmit={handleSubmit}>
         <Select value={values.shape} onChange={actions.updateShape}>
           {(Object.keys(coverShapes) as Array<keyof typeof coverShapes>).map(
             (shape) => {
@@ -65,9 +74,33 @@ export default function CoverGenerator() {
           />
         ) : null}
 
-        <Button type="submit" className={styles['form__submit']}>
-          Générer
-        </Button>
+        <div className={styles['form__action-bar']}>
+          {selectors.isError ? (
+            <p
+              className={cc([
+                styles['form__status'],
+                styles['form__status--error'],
+              ])}
+            >
+              Erreur dans la génération de l&apos;image
+            </p>
+          ) : null}
+
+          {selectors.isSuccess ? (
+            <p
+              className={cc([
+                styles['form__status'],
+                styles['form__status--success'],
+              ])}
+            >
+              Image générée !
+            </p>
+          ) : null}
+
+          <Button type="submit" className={styles['form__submit']}>
+            Générer
+          </Button>
+        </div>
       </form>
     </div>
   );

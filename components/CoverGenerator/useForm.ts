@@ -2,35 +2,92 @@ import { coverShapes, isCoverShape } from '@/data/cover';
 import * as React from 'react';
 
 type FormState = {
-  img: string;
-  title: string;
-  subtitle: string;
-  shape: keyof typeof coverShapes;
+  status: 'idle' | 'submitting' | 'success' | 'failure';
+  values: {
+    img: string;
+    title: string;
+    subtitle: string;
+    shape: keyof typeof coverShapes;
+  };
 };
 
 const initialState: FormState = {
-  img: '',
-  title: '',
-  subtitle: '',
-  shape: 'square',
+  status: 'idle',
+  values: {
+    img: '',
+    title: '',
+    subtitle: '',
+    shape: 'square',
+  },
 };
 
 type Action =
   | { type: 'SET_IMG'; payload: string }
   | { type: 'SET_TITLE'; payload: string }
   | { type: 'SET_SUBTITLE'; payload: string }
-  | { type: 'SET_SHAPE'; payload: FormState['shape'] };
+  | { type: 'SET_SHAPE'; payload: FormState['values']['shape'] }
+  | { type: 'SUBMIT' }
+  | { type: 'SUBMIT_SUCCESS' }
+  | { type: 'SUBMIT_FAILURE' };
 
 const reducer = (state: FormState, action: Action): FormState => {
   switch (action.type) {
-    case 'SET_IMG':
-      return { ...state, img: action.payload };
-    case 'SET_TITLE':
-      return { ...state, title: action.payload };
-    case 'SET_SUBTITLE':
-      return { ...state, subtitle: action.payload };
-    case 'SET_SHAPE':
-      return { ...state, shape: action.payload };
+    case 'SET_IMG': {
+      return {
+        ...state,
+        status: 'idle',
+        values: {
+          ...state.values,
+          img: action.payload,
+        },
+      };
+    }
+
+    case 'SET_TITLE': {
+      return {
+        ...state,
+        status: 'idle',
+        values: { ...state.values, title: action.payload },
+      };
+    }
+
+    case 'SET_SUBTITLE': {
+      return {
+        ...state,
+        status: 'idle',
+        values: { ...state.values, subtitle: action.payload },
+      };
+    }
+
+    case 'SET_SHAPE': {
+      return {
+        ...state,
+        status: 'idle',
+        values: { ...state.values, shape: action.payload },
+      };
+    }
+
+    case 'SUBMIT': {
+      return {
+        ...state,
+        status: 'submitting',
+      };
+    }
+
+    case 'SUBMIT_SUCCESS': {
+      return {
+        ...state,
+        status: 'success',
+      };
+    }
+
+    case 'SUBMIT_FAILURE': {
+      return {
+        ...state,
+        status: 'failure',
+      };
+    }
+
     default:
       return state;
   }
@@ -75,13 +132,34 @@ export const useForm = () => {
     [dispatch]
   );
 
+  const submit = React.useCallback(() => {
+    dispatch({ type: 'SUBMIT' });
+  }, [dispatch]);
+
+  const submitSuccess = React.useCallback(() => {
+    dispatch({ type: 'SUBMIT_SUCCESS' });
+  }, [dispatch]);
+
+  const submitFailure = React.useCallback(() => {
+    dispatch({ type: 'SUBMIT_FAILURE' });
+  }, [dispatch]);
+
   return {
-    values: {
-      img: state.img,
-      title: state.title,
-      subtitle: state.subtitle,
-      shape: state.shape,
+    values: state.values,
+    actions: {
+      updateImg,
+      updateTitle,
+      updateSubtitle,
+      updateShape,
+      submit,
+      submitSuccess,
+      submitFailure,
     },
-    actions: { updateImg, updateTitle, updateSubtitle, updateShape },
+    selectors: {
+      isSubmitting: state.status === 'submitting',
+      isSuccess: state.status === 'success',
+      isError: state.status === 'failure',
+      isIdle: state.status === 'idle',
+    },
   };
 };
