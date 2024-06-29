@@ -1,7 +1,7 @@
 import * as React from 'react';
 import DraggableImg from '../DraggableImg';
 import styles from './index.module.css';
-import { coverShapes } from '@/data/cover';
+import { coverShapes, isInShapeComposition } from '@/data/cover';
 import Logo from '../Logo';
 import cc from 'classcat';
 
@@ -26,7 +26,19 @@ export default React.forwardRef<HTMLDivElement, Props>(function Cover(
     >
       <span className={styles['cover__gradient']} />
       <Logo className={styles['cover__logo']} />
-      <h1 className={styles['cover__heading']}>{title}</h1>
+
+      <h1
+        className={cc({
+          [styles['cover__title']]: true,
+          [styles['cover__title--hidden']]: !isInShapeComposition(
+            shape,
+            'title'
+          ),
+        })}
+      >
+        {title}
+      </h1>
+
       <DraggableImg src={img} wrapperWidth={width} wrapperHeight={height} />
     </div>
   );

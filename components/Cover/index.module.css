@@ -4,7 +4,6 @@
 }
 
 .cover__gradient {
-  content: "";
   background-size: cover;
   position: absolute;
   top: 0;
@@ -23,7 +22,7 @@
   background-image: url("/cover/overlay-twitter.png");
 }
 
-.cover__heading {
+.cover__title {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -34,6 +33,10 @@
   pointer-events: none;
   font-family: 'Georgia', sans-serif;
   font-weight: 400;
+}
+
+.cover__title--hidden {
+  display: none;
 }
 
 .cover__logo {
@@ -55,8 +58,4 @@
   width: 280px;
   left: 50px;
   bottom: 39px;
-}
-
-.cover--square .cover__heading {
-  display: none;
 }

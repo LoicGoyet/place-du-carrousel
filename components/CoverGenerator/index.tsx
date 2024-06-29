@@ -8,7 +8,7 @@ import FileInput from '../FileInput';
 import Input from '../Input';
 import { useForm } from './useForm';
 import Select from '../Select';
-import { coverShapes } from '@/data/cover';
+import { coverShapes, isInShapeComposition } from '@/data/cover';
 import Button from '../Button';
 
 export default function CoverGenerator() {
@@ -48,16 +48,23 @@ export default function CoverGenerator() {
           )}
         </Select>
         <FileInput value={values.img} onChange={actions.updateImg} />
-        <Input
-          value={values.title}
-          onChange={actions.updateTitle}
-          placeholder="Titre"
-        />
-        <Input
-          value={values.subtitle}
-          onChange={actions.updateSubtitle}
-          placeholder="Sous titre"
-        />
+
+        {isInShapeComposition(values.shape, 'title') ? (
+          <Input
+            value={values.title}
+            onChange={actions.updateTitle}
+            placeholder="Titre"
+          />
+        ) : null}
+
+        {isInShapeComposition(values.shape, 'subtitle') ? (
+          <Input
+            value={values.subtitle}
+            onChange={actions.updateSubtitle}
+            placeholder="Sous titre"
+          />
+        ) : null}
+
         <Button type="submit" className={styles['form__submit']}>
           Générer
         </Button>
