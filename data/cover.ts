@@ -9,6 +9,14 @@ export const coverShapes = {
     imgHeight: 540,
     composition: ['img'],
   },
+  headliner: {
+    label: 'Headliner',
+    width: 540,
+    height: 540,
+    imgWidth: 540,
+    imgHeight: 540,
+    composition: ['img'],
+  },
   twitter: {
     label: 'Post twitter',
     width: 600,

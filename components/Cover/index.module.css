@@ -18,6 +18,10 @@
   background-image: url("/cover/overlay-square.png");
 }
 
+.cover--headliner .cover__gradient {
+  background-image: url("/cover/overlay-headliner.png");
+}
+
 .cover--twitter .cover__gradient {
   background-image: url("/cover/overlay-twitter.png");
 }
@@ -49,6 +53,12 @@
   left: 50%;
   transform: translateX(-50%);
   bottom: 69px;
+}
+
+.cover--headliner .cover__logo {
+  width: 184px;
+  top: 25px;
+  left: 25px;
 }
 
 .cover--twitter .cover__logo {
